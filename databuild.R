@@ -23,6 +23,7 @@ for(x in 1:length(dataset)){
   dataparse[x,c(paste0("part_item",1:3),paste0("part_value",1:3))]<-splitted[(length(splitted)-5):length(splitted)]
   print(x)
 }
+dataparse<-dataparse[!is.na(dataparse),]
 
 dataparse$id<-1:nrow(dataparse)
 dataparse$group<-(1:nrow(dataparse)+1)%/% 2
@@ -35,13 +36,14 @@ turnparse<-data.frame(id=NA,
 
 tpb<-txtProgressBar(0,nrow(dataparse))
 for(x in 1:nrow(dataparse)){
-  print(x)
   person.turns<-strsplit(dataparse[x,"text"],"<eos>")[[1]]
   row.set<-(nrow(turnparse)+1):(nrow(turnparse)+length(person.turns))
   turnparse[row.set,c("id","group")]<-dataparse[x,c("id","group")]
   turnparse[row.set,"text"]<-person.turns
   turnparse[row.set,"turn"]<-1:length(person.turns)
-  
+  setTxtProgressBar(tpb,x)
 }
-
 turnparse$youthem<-1*grepl("YOU:",turnparse$text,fixed=T)
+
+write.csv(turnparse,"turnparse.csv",row.names=F)
+write.csv(dataparse,"dataparse.csv",row.names=F)
