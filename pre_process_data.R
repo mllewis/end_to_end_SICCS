@@ -69,14 +69,12 @@ agrees = turnparse %>%
 
 items = turnparse %>%
   select(-cleantext) %>%
-  
   filter(!is.na(group)) %>%
   group_by(id) %>% 
   slice(-n())  %>%
   slice(n())
 
 groups = inner_join(agrees, items, by = c("id", "group")) %>%
-  slice(1:100) %>%
   select(-starts_with("you"), -starts_with("turn")) %>%
   mutate(text.x = as.character(text.x),
          agreement = unlist(lapply(str_split(text.x, "=| "), 
