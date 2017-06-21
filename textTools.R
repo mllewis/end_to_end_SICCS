@@ -58,9 +58,6 @@ ctxpand<-function(text){
   text<-sapply(text, function(x) gsub("i.e.", "ie", x, fixed=T))
   return(text)}
 
-
-#source("politenessTools.R")
-
 politeness<-function(text, set="short"){
   features<-list()
   c.text<-cleantext(text, stop.words=FALSE)
