@@ -43,6 +43,6 @@ for(x in 1:nrow(dataparse)){
   turnparse[row.set,"turn"]<-1:length(person.turns)
   setTxtProgressBar(tpb,x)
 }
-
+turnparse<-turnparse[!(is.na(turnparse$group)),]
 write.csv(turnparse,"turnparse.csv",row.names=F)
 write.csv(dataparse,"dataparse.csv",row.names=F)
